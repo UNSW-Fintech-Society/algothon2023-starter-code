@@ -10,8 +10,8 @@ def getMyPosition (prcSoFar):
     if (nt < 2):
         return np.zeros(nins)
     lastRet = np.log(prcSoFar[:,-1] / prcSoFar[:,-2])
-    rpos = np.array([int(x) for x in 2000 * lastRet / prcSoFar[:,-1]])
-    currentPos = np.array(map(int, currentPos+rpos))
+    rpos = np.array([int(x) for x in 2000000 * lastRet / prcSoFar[:,-1]])
+    currentPos = np.array([int(x) for x in currentPos+rpos])
     return currentPos
 
     
