@@ -66,7 +66,7 @@ Algorithms must be contained in a file titled _[teamName].py._
 - _getMyPosition()_ must be in the global scope of the file called _[teamName].py_ and have the appropriate signature.
   - The function will be called once a day, with the entire price history up to and including that day. For example, on day 240, your function should take as input an array of 50 inst x 240 days.
   - When _getMyPosition()_ is called, we will trade position differences from the previous position **at the most recent price, buying or selling.**
-  - Consider the case where your last position was +30, and the new stock price is $20. If your new position is +50, _eval_ will register this as buying 70 **extra** shares at $20 a share. If your new position is -200, _eval_ will sell 230 shares also at $20 a share.
+  - Consider the case where your last position was +30, and the new stock price is $20. If your new position is +50, _eval_ will register this as buying 20 **extra** shares at $20 a share. If your new position is -200, _eval_ will sell 230 shares also at $20 a share.
 
 ### **Accepted Packages**
 
