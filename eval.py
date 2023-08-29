@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-
 import numpy as np
 import pandas as pd
 from main import getMyPosition as getPosition
+
 
 nInst = 0
 nt = 0
@@ -18,7 +18,6 @@ def loadPrices(fn):
 
 pricesFile="./prices.txt"
 prcAll = loadPrices(pricesFile)
-print ("Loaded %d instruments for %d days" % (nInst, nt))
 
 currentPos = np.zeros(nInst)
 
@@ -31,7 +30,7 @@ def calcPL(prcHist):
     value = 0
     todayPLL = []
     (_,nt) = prcHist.shape
-    for t in range(1,501): 
+    for t in range(500,751): #(1,251): 
         prcHistSoFar = prcHist[:,:t]
         newPosOrig = getPosition(prcHistSoFar)
         curPrices = prcHistSoFar[:,-1] #prcHist[:,t-1]
@@ -52,7 +51,6 @@ def calcPL(prcHist):
         ret = 0.0
         if (totDVolume > 0):
             ret = value / totDVolume
-        print ("Day %d value: %.2lf todayPL: $%.2lf $-traded: %.0lf return: %.5lf" % (t,value, todayPL, totDVolume, ret))
     pll = np.array(todayPLL)
     (plmu,plstd) = (np.mean(pll), np.std(pll))
     annSharpe = 0.0
@@ -60,16 +58,9 @@ def calcPL(prcHist):
         annSharpe = np.sqrt(250) * plmu / plstd
     return (plmu, ret, plstd, annSharpe, totDVolume)
 
-
-
 (meanpl, ret, plstd, sharpe, dvol) = calcPL(prcAll)
 score = meanpl - 0.1*plstd
-print ("=====")
-print ("mean(PL): %.1lf" % meanpl)
-print ("return: %.5lf" % ret)
-print ("StdDev(PL): %.2lf" % plstd)
-print ("annSharpe(PL): %.2lf " % sharpe)
-print ("totDvolume: %.0lf " % dvol)
-print ("Score: %.2lf" % score)
+
+print ("%.6lf" % score)
 
 
