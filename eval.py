@@ -61,6 +61,12 @@ def calcPL(prcHist):
 (meanpl, ret, plstd, sharpe, dvol) = calcPL(prcAll)
 score = meanpl - 0.1*plstd
 
-print ("%.6lf" % score)
+print ("=====")
+print ("mean(PL): %.1lf" % meanpl)
+print ("return: %.5lf" % ret)
+print ("StdDev(PL): %.2lf" % plstd)
+print ("annSharpe(PL): %.2lf " % sharpe)
+print ("totDvolume: %.0lf " % dvol)
+print ("Score: %.2lf" % score)
 
 
