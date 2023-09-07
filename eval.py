@@ -1,8 +1,8 @@
 #!/usr/bin/env python
+
 import numpy as np
 import pandas as pd
-from main import getMyPosition as getPosition
-
+from teamName import getMyPosition as getPosition
 
 nInst = 0
 nt = 0
@@ -16,8 +16,9 @@ def loadPrices(fn):
     nt, nInst = df.values.shape
     return (df.values).T
 
-pricesFile="./prices.txt"
+pricesFile="./pricesGrandFinal.txt"
 prcAll = loadPrices(pricesFile)
+print ("Loaded %d instruments for %d days" % (nInst, nt))
 
 currentPos = np.zeros(nInst)
 
@@ -30,7 +31,7 @@ def calcPL(prcHist):
     value = 0
     todayPLL = []
     (_,nt) = prcHist.shape
-    for t in range(500,751): #(1,251): 
+    for t in range(750,1001): 
         prcHistSoFar = prcHist[:,:t]
         newPosOrig = getPosition(prcHistSoFar)
         curPrices = prcHistSoFar[:,-1] #prcHist[:,t-1]
@@ -51,6 +52,15 @@ def calcPL(prcHist):
         ret = 0.0
         if (totDVolume > 0):
             ret = value / totDVolume
+        # *** Intermediate score calculation ***
+        pll = np.array(todayPLL)
+        (plmu, plstd) = (np.mean(pll), np.std(pll))
+        annSharpe = 0.0
+        if (plstd > 0):
+            annSharpe = np.sqrt(250) * plmu / plstd
+        score = plmu - 0.1 * plstd
+        # *** Intermediate score calculation (end) ***
+        print ("Day %d value: %.2lf todayPL: $%.2lf $-traded: %.0lf return: %.5lf Score: %.2lf" % (t,value, todayPL, totDVolume, ret, score))
     pll = np.array(todayPLL)
     (plmu,plstd) = (np.mean(pll), np.std(pll))
     annSharpe = 0.0
@@ -58,9 +68,10 @@ def calcPL(prcHist):
         annSharpe = np.sqrt(250) * plmu / plstd
     return (plmu, ret, plstd, annSharpe, totDVolume)
 
+
+
 (meanpl, ret, plstd, sharpe, dvol) = calcPL(prcAll)
 score = meanpl - 0.1*plstd
-
 print ("=====")
 print ("mean(PL): %.1lf" % meanpl)
 print ("return: %.5lf" % ret)
