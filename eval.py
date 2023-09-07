@@ -2,7 +2,7 @@
 
 import numpy as np
 import pandas as pd
-from teamName import getMyPosition as getPosition
+from main import getMyPosition as getPosition
 
 nInst = 0
 nt = 0
@@ -16,7 +16,7 @@ def loadPrices(fn):
     nt, nInst = df.values.shape
     return (df.values).T
 
-pricesFile="./pricesGrandFinal.txt"
+pricesFile="./prices.txt"
 prcAll = loadPrices(pricesFile)
 print ("Loaded %d instruments for %d days" % (nInst, nt))
 
